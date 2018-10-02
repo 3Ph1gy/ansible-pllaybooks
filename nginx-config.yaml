@@ -1,0 +1,20 @@
+---
+- host: servers
+  remote_user: austinserv
+  become: yes
+  become_method: sudo
+  tasks:
+    - name:
+      apt:
+      name: "nginx"
+      state: latest
+
+    - name: replace conf file
+      copy:
+        src: ~/conffiles/nginx.conf
+        dest: /etc/nginx/
+
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: "restart"

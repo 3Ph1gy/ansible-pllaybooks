@@ -1,0 +1,18 @@
+---
+- hosts: servers
+  remote_user: austinserv
+  tasks:
+    - name: checkports
+      command: nestat -ntpl 
+      register: netstat
+    - debug: var=netstat.stdout_lines
+
+    - name: firewall rules
+      become: yes
+      become_method: sudo
+      ufw: 
+        rule: allow
+        port: 22, 80 
+        proto: tcp
+        state: enabled
+        logging: low
